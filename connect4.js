@@ -9,7 +9,7 @@ const WIDTH = 7;
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
-const board = []; // array of rows, each row is array of cells  (board[y][x])
+let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
@@ -63,7 +63,7 @@ function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
   //loop through each item in column and return 
   for (let i=HEIGHT-1;i>=0;i--){
-    if(!document.getElementById(`${i}-${x}`).innerHTML){
+    if(!board[i][x]){
       return i;
     }
   }
@@ -86,6 +86,10 @@ function placeInTable(y, x) {
 function endGame(msg) {
   // TODO: pop up alert message
   alert(msg);
+  document.getElementById('board').innerHTML = '';
+  board = [];
+  makeBoard();
+  makeHtmlBoard();
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -102,9 +106,8 @@ function handleClick(evt) {
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
-  placeInTable(y, x);
   board[y][x] = currPlayer;
-  console.log("board is ... " + board);
+  placeInTable(y, x);
 
   // check for win
   if (checkForWin()) {
@@ -113,10 +116,8 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
-  let allFilled = board.every((y,x)=>{
-    y >= 0 && y < HEIGHT && x >=0 && x < WIDTH && board[y][x] !== null;   
-  });
-  if(allFilled){
+  let boardFilled = board.every((row)=> row.every(cell=>cell));
+  if(boardFilled){
     return endGame(`The game ended in a tie!`);
   }
 
@@ -146,13 +147,16 @@ function checkForWin() {
 
   // TODO: read and understand this code. Add comments to help you.
 
-  for (var y = 0; y < HEIGHT; y++) {
-    for (var x = 0; x < WIDTH; x++) {
-      var horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      var vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-      var diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-      var diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+  //starting from 0,0
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
+      //grab all possible winning coordinates 
+      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+      let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
+      //Check if any of the scenarios are winners
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
       }
