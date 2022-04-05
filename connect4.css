@@ -1,6 +1,7 @@
 /* game board table */
 
 #board td {
+  /* display: relative; */
   width: 50px;
   height: 50px;
   border: solid 1px #666;
@@ -10,12 +11,18 @@
 
 .piece {
   /* TODO: make into circles */
+  /* display: absolute; */
   margin: 5px;
   width: 80%;
   height: 80%;
   border-radius: 50%;
+  animation: drop 1s;
 }
 
+@keyframes drop {
+  from {transform: translateY(-700%);}
+  to {transform: translateY(0%)}
+}
 /* TODO: make pieces red/blue,  depending on player 1/2 piece */
 .p1{
   background-color:blue;

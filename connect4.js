@@ -10,10 +10,22 @@ const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
 let board = []; // array of rows, each row is array of cells  (board[y][x])
+let playerNamesForm = document.getElementById('playerNamesForm');
+let p1Name = "player1";
+let p2Name = "player2"
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
+
+playerNamesForm.addEventListener('submit',saveNames);
+
+function saveNames(evt){
+  evt.preventDefault();
+  p1Name = evt.target.children[0].value;
+  p2Name = evt.target.children[1].value;
+  console.log("player names are p1 ... " + p1Name + " and p2 ... " + p2Name);
+}
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
@@ -29,6 +41,10 @@ function makeBoard() {
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
+  p1Name = prompt("Enter a name for player 1", 'player1');
+  p2Name = prompt("Enter a name for player 2", 'player2');
+  document.getElementById("player1NameBox").innerText = p1Name;
+  document.getElementById("player2NameBox").innerText = p2Name;
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.getElementById('board');
 
@@ -37,6 +53,7 @@ function makeHtmlBoard() {
   const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
+  //top.addEventListener('mouseover', showPlayer)
 
   for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement("td");
@@ -90,6 +107,21 @@ function endGame(msg) {
   board = [];
   makeBoard();
   makeHtmlBoard();
+}
+function showPlayer(evt){
+  //console.log("showPlayer() ... " + currPlayer);
+  //console.log("background color is " + evt.target.style.backgroundColor);
+  console.log("currPlayer is ... " + currPlayer);
+  const x = +evt.target;
+   if (currPlayer === 1){
+    console.log("class list is ... " + evt.target.classList);
+    //evt.target.classList.add('p1');
+    //evt.target.classList.remove('p2');
+  }else if(currPlayer === 2){
+    console.log("class list is ... " + evt.target.classList);
+    //evt.target.classList.add('p2');
+    //evt.target.classList.remove('p1');
+  }
 }
 
 /** handleClick: handle click of column top to play piece */
