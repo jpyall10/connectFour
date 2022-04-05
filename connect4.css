@@ -1,7 +1,6 @@
 /* game board table */
 
 #board td {
-  /* display: relative; */
   width: 50px;
   height: 50px;
   border: solid 1px #666;
@@ -11,7 +10,6 @@
 
 .piece {
   /* TODO: make into circles */
-  /* display: absolute; */
   margin: 5px;
   width: 80%;
   height: 80%;
